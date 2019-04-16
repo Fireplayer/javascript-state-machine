@@ -26,36 +26,45 @@ Demo = function() {
 
   var fsm = new StateMachine({
 
+    init: "red",
     transitions: [
+      { name: 'start', from: 'red',   to: 'green'  },
       { name: 'start', from: 'none',   to: 'green'  },
       { name: 'warn',  from: 'green',  to: 'yellow' },
       { name: 'panic', from: 'green',  to: 'red'    },
       { name: 'panic', from: 'yellow', to: 'red'    },
       { name: 'calm',  from: 'red',    to: 'yellow' },
-      { name: 'clear', from: 'red',    to: 'green'  },
       { name: 'clear', from: 'yellow', to: 'green'  },
     ],
 
     methods: {
 
-      onBeforeTransition: function(lifecycle) {
-        log("BEFORE: " + lifecycle.transition, true);
+      // onBeforeTransition: function(lifecycle) {
+      //   log("BEFORE: " + lifecycle.transition, true);
+      // },
+
+      // onLeaveState: function(lifecycle) {
+      //   log("LEAVE: " + lifecycle.from);
+      // },
+
+      // onTransition: function(lifecycle) {
+      //   log("DURING: " + lifecycle.transition + " (from " + lifecycle.from + " to " + lifecycle.to + ")");
+      // },
+
+      // onEnterState: function(lifecycle) {
+      //   log("ENTER: " + lifecycle.to);
+      // },
+
+      // onAfterTransition: function(lifecycle) {
+      //   log("AFTER: " + lifecycle.transition);
+      // },
+
+      onEnterYellow: function(lifecycle) {
+        log("onEnterYellow: " + lifecycle.transition + " (from " + lifecycle.from + " to " + lifecycle.to + ")");
       },
 
-      onLeaveState: function(lifecycle) {
-        log("LEAVE: " + lifecycle.from);
-      },
-
-      onEnterState: function(lifecycle) {
-        log("ENTER: " + lifecycle.to);
-      },
-
-      onAfterTransition: function(lifecycle) {
-        log("AFTER: " + lifecycle.transition);
-      },
-
-      onTransition: function(lifecycle) {
-        log("DURING: " + lifecycle.transition + " (from " + lifecycle.from + " to " + lifecycle.to + ")");
+      onLeaveYellow: function(lifecycle) {
+        log("onLeaveYellow: " + lifecycle.transition + " (from " + lifecycle.from + " to " + lifecycle.to + ")");
       },
 
       onLeaveRed: function(lifecycle) {
@@ -76,8 +85,10 @@ Demo = function() {
 
     }
   });
-
+  console.log("fsm======", fsm)
   fsm.start();
+  g_fsm  = fsm;
+  
   return fsm;
 
 }();
